@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Panel Admin{% endblock %}
+{% block content %}
+
+<h2 class="text-2xl font-bold mb-6 text-yellow-300 flex items-center gap-2">👥 Usuarios Visitantes</h2>
+
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-gray-800 text-yellow-300 rounded-lg shadow-md overflow-hidden">
+        <thead class="bg-gray-700 text-yellow-300">
+            <tr>
+                <th class="px-4 py-2 text-left">ID</th>
+                <th class="px-4 py-2 text-left">Nombre</th>
+                <th class="px-4 py-2 text-left">Email</th>
+                <th class="px-4 py-2 text-left">Último Login</th>
+                <th class="px-4 py-2 text-left">Acción</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-600">
+            {% for u in usuarios %}
+            <tr class="hover:bg-gray-700">
+                <td class="px-4 py-2">{{ u.id }}</td>
+                <td class="px-4 py-2">{{ u.nombre }} {{ u.apellidos }}</td>
+                <td class="px-4 py-2">{{ u.email }}</td>
+                <td class="px-4 py-2">{{ u.ultimo_login or 'Nunca' }}</td>
+                <td class="px-4 py-2">
+                    <a href="{{ url_for('eliminar_usuario', user_id=u.id) }}"
+                       onclick="return confirm('¿Seguro que quieres eliminar este usuario?')"
+                       class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors text-sm">
+                        🗑 Eliminar
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="px-4 py-4 text-center text-yellow-400">No hay usuarios registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

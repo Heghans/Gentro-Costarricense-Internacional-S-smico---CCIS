@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Sistema de Sismos{% endblock %}</title>
+  <link href="{{ url_for('static', filename='output.css') }}" rel="stylesheet" />
+</head>
+<body class="bg-gray-900 text-yellow-300 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gray-800 text-yellow-300 p-4 flex items-center gap-4 shadow">
+    <img src="{{ url_for('static', filename='img/CCIS.logo.png') }}" alt="Logo" class="h-30 w-30 object-contain" />
+    <h1 class="text-2xl font-bold">Centro Costarricense de Investigación Sísmica</h1>
+  </header>
+
+  <!-- Contenido principal -->
+  <div class="flex flex-1 overflow-hidden">
+
+
+    <!-- Sidebar -->
+    <nav class="bg-gray-800 text-yellow-300 w-48 p-6 flex flex-col gap-4">
+      <a href="{{ url_for('index') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Inicio</a>
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('mapa') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Mapa</a>
+        <a href="{{ url_for('profile') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Perfil</a>
+        {% if session.get('user_rol') == 'admin' %}
+          <a href="{{ url_for('admin') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Admin</a>
+        {% endif %}
+        {% if session.get('user_rol') == 'admin' %}
+          <a href="{{ url_for('crud_noticias') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Noticias</a>
+        {% endif %}
+        <a href="{{ url_for('logout') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Salir</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Login</a>
+        <a href="{{ url_for('register') }}" class="hover:bg-gray-700 px-3 py-2 rounded">Registro</a>
+      {% endif %}
+    </nav>
+
+    <!-- Contenido central -->
+    <main class="flex-1 overflow-auto p-6 bg-gray-850">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="p-3 mb-4 rounded {{ 'bg-green-700 text-green-200' if category == 'success' else 'bg-red-700 text-red-200' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Noticias recientes -->
+    <aside class="w-64 bg-gray-700 border-l border-gray-700 p-6 overflow-y-auto">
+      <h2 class="text-lg font-bold mb-4 text-yellow-300">Noticias Recientes</h2>
+      {% for noticia in noticias %}
+        <article class="mb-4 p-3 bg-gray-700 rounded shadow-sm hover:shadow-md transition">
+          <h3 class="font-semibold text-yellow-300">{{ noticia.titulo }}</h3>
+          <p class="text-yellow-200 text-sm">{{ noticia.contenido }}</p>
+          <time class="text-xs text-yellow-400">{{ noticia.fecha.strftime('%Y-%m-%d') }}</time>
+        </article>
+      {% else %}
+        <p class="text-yellow-400">No hay noticias recientes.</p>
+      {% endfor %}
+    </aside>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-yellow-300 p-4 text-center">
+    <p>© 2025 CMS SOFTWARE & CCIS</p>
+  </footer>
+</body>
+</html>

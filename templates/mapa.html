@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Mapa Sísmico{% endblock %}
+{% block content %}
+
+<h2 class="text-2xl font-extrabold mb-6 text-yellow-300 flex items-center gap-2">🌎 Mapa de Sismos</h2>
+
+<!-- Filtros -->
+<div class="bg-gray-800 text-yellow-300 p-6 rounded-lg shadow-md mb-6 flex flex-wrap gap-4 max-w-3xl">
+  <input type="number" id="min_magnitud" placeholder="Magnitud mínima"
+         class="border border-gray-600 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-36" min="0" step="0.1" />
+  <input type="date" id="start_time"
+         class="border border-gray-600 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-44" />
+  <input type="date" id="end_time"
+         class="border border-gray-600 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400 w-44" />
+  <button id="btn_filtrar"
+          class="bg-yellow-400 text-gray-900 px-6 py-2 rounded hover:bg-yellow-500 transition-colors">
+    Filtrar
+  </button>
+</div>
+
+<!-- Mapa -->
+<div id="map" class="w-full h-[480px] rounded shadow-lg border border-gray-600"></div>
+
+<!-- Leaflet CSS y JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="../static/js/app.js"> </script>
+
+{% endblock %}

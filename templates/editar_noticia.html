@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Editar Noticia{% endblock %}
+{% block content %}
+
+<h2 class="text-2xl font-bold mb-6 text-yellow-400 flex items-center gap-2">✏ Editar Noticia</h2>
+
+<form method="POST" class="bg-gray-700 p-6 rounded-lg shadow-md space-y-4 max-w-xl text-yellow-300">
+    <input type="text" name="titulo" value="{{ noticia.titulo }}" required
+           class="w-full border border-gray-500 rounded px-4 py-2 bg-gray-600 text-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+    <textarea name="contenido" required
+              class="w-full border border-gray-500 rounded px-4 py-2 bg-gray-600 text-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 h-32">{{ noticia.contenido }}</textarea>
+    
+    <div class="flex gap-3">
+        <button type="submit"
+                class="bg-yellow-500 text-gray-800 px-6 py-2 rounded hover:bg-yellow-400 transition-colors">
+            💾 Guardar cambios
+        </button>
+        <a href="{{ url_for('crud_noticias') }}"
+           class="bg-gray-500 text-yellow-300 px-6 py-2 rounded hover:bg-gray-600 transition-colors">
+            ↩ Volver
+        </a>
+    </div>
+</form>
+
+{% endblock %}

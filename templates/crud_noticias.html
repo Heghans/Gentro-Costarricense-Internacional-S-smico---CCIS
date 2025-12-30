@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Gestión de Noticias{% endblock %}
+{% block content %}
+
+<h2 class="text-2xl font-bold mb-6 text-yellow-400 flex items-center gap-2">📢 Gestión de Noticias</h2>
+
+<!-- Formulario para agregar noticia -->
+<form method="POST" class="bg-gray-700 p-6 rounded-lg shadow-md mb-8 space-y-4 text-yellow-300">
+    <input type="text" name="titulo" placeholder="Título" required
+           class="w-full border border-gray-500 rounded px-4 py-2 bg-gray-600 text-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+    <textarea name="contenido" placeholder="Contenido" required
+              class="w-full border border-gray-500 rounded px-4 py-2 bg-gray-600 text-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 h-24"></textarea>
+    <button type="submit"
+            class="bg-yellow-500 text-gray-800 px-6 py-2 rounded hover:bg-yellow-400 transition-colors">
+        ➕ Agregar
+    </button>
+</form>
+
+<hr class="mb-6 border-gray-600">
+
+<!-- Tabla de noticias existentes -->
+<h3 class="text-xl font-semibold mb-4 text-yellow-300">Noticias existentes</h3>
+<div class="overflow-x-auto">
+    <table class="min-w-full bg-gray-800 border border-gray-600 rounded-lg overflow-hidden text-yellow-300">
+        <thead class="bg-gray-700">
+            <tr>
+                <th class="px-4 py-2 text-left">ID</th>
+                <th class="px-4 py-2 text-left">Título</th>
+                <th class="px-4 py-2 text-left">Fecha</th>
+                <th class="px-4 py-2 text-left">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-600">
+            {% for n in todas_noticias %}
+            <tr class="hover:bg-gray-600">
+                <td class="px-4 py-2">{{ n.id }}</td>
+                <td class="px-4 py-2">{{ n.titulo }}</td>
+                <td class="px-4 py-2">{{ n.fecha.strftime('%d/%m/%Y') if n.fecha else '' }}</td>
+                <td class="px-4 py-2 flex gap-2">
+                    <a href="{{ url_for('editar_noticia', noticia_id=n.id) }}"
+                       class="bg-yellow-400 text-gray-800 px-3 py-1 rounded hover:bg-yellow-500 transition-colors text-sm">✏ Editar</a>
+                    <a href="{{ url_for('eliminar_noticia', noticia_id=n.id) }}"
+                       onclick="return confirm('¿Seguro que quieres eliminar esta noticia?')"
+                       class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors text-sm">🗑 Eliminar</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-4 text-center text-gray-400">No hay noticias registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
